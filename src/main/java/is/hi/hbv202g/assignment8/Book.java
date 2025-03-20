@@ -29,7 +29,10 @@ public class Book {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<Author> authors) throws EmptyAuthorListException {
+        if (authors == null || authors.isEmpty()) {
+            throw new EmptyAuthorListException("Author list cannot be empty");
+        }
         this.authors = authors;
     }
 
