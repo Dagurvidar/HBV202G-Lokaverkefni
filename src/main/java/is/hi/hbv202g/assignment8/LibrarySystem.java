@@ -51,12 +51,20 @@ public class LibrarySystem {
         }
     }
 
-    public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) {
-
+    public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) throws UserOrBookDoesNotExistException {
+        if (!books.contains(book)) {
+            throw new UserOrBookDoesNotExistException("Book could not be found");
+        }
     }
 
-    public void returnBook(User user, Book book) throws UserPrincipalNotFoundException {
+    public void returnBook(User user, Book book) throws UserOrBookDoesNotExistException {
+        if (!users.contains(user)) {
+            throw new UserOrBookDoesNotExistException("User could not be found");
+        }
 
+        if (!books.contains(book)) {
+            throw new UserOrBookDoesNotExistException("Book could not be found");
+        }
     }
 
 
