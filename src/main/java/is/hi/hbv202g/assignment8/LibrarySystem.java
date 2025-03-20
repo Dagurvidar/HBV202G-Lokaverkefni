@@ -33,12 +33,24 @@ public class LibrarySystem {
         users.add(new FacultyMember(name, department));
     }
 
-    public Book findBookByTitle(String title) {
-        return null;
+    public Book findBookByTitle(String title) throws UserOrBookDoesNotExistException {
+        for (Book book : books) {
+            if (book.getTitle().equals(title)) {
+                return book;
+            }
+        }
+
+        throw new UserOrBookDoesNotExistException("Book could not be found");
     }
 
-    public User findUserByName(String name) {
-        return null;
+    public User findUserByName(String name) throws UserOrBookDoesNotExistException {
+        for (User user : users) {
+            if (user.getName().equals(name)) {
+                return user;
+            }
+        }
+
+        throw new UserOrBookDoesNotExistException("User could not be found");
     }
 
     public void borrowBook(User user, Book book) throws UserOrBookDoesNotExistException {
