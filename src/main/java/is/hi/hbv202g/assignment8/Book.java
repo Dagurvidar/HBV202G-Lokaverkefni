@@ -12,7 +12,11 @@ public class Book {
         this.authors.add(new Author(authorName));
     }
 
-    public Book(String title, List<Author> authors) {
+    public Book(String title, List<Author> authors) throws EmptyAuthorListException {
+        if (authors == null || authors.isEmpty()) {
+            throw new EmptyAuthorListException("Author list cannot be empty");
+        }
+
         this.title = title;
         this.authors = authors;
     }
