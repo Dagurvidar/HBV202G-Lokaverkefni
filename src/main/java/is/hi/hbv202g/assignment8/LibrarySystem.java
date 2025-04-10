@@ -13,10 +13,19 @@ public class LibrarySystem {
     public LibrarySystem() {
     }
 
+    /**
+     * @param title of book
+     * @param authorName name of author
+     */
     public void addBookWithTitleAndNameOfSingleAuthor(String title, String authorName) {
         books.add(new Book(title, authorName));
     }
 
+    /**
+     * @param title of book
+     * @param authors of book
+     * @throws EmptyAuthorListException author list should not be empty
+     */
     public void addBookWithTitleAndAuthorList(String title, List<Author> authors) throws EmptyAuthorListException {
         if (authors == null || authors.isEmpty()) {
             throw new EmptyAuthorListException("Author list cannot be empty");
@@ -25,14 +34,27 @@ public class LibrarySystem {
         books.add(new Book(title, authors));
     }
 
+    /**
+     * @param name of student
+     * @param feePaid has the lending fee been paid
+     */
     public void addStudentUser(String name, boolean feePaid) {
         users.add(new Student(name, feePaid));
     }
 
+    /**
+     * @param name of staff member
+     * @param department of staff member
+     */
     public void addFacultyMemberUser(String name, String department) {
         users.add(new FacultyMember(name, department));
     }
 
+    /**
+     * @param title of book
+     * @return Book object
+     * @throws UserOrBookDoesNotExistException if book is not found
+     */
     public Book findBookByTitle(String title) throws UserOrBookDoesNotExistException {
         for (Book book : books) {
             if (book.getTitle().equals(title)) {
@@ -43,6 +65,11 @@ public class LibrarySystem {
         throw new UserOrBookDoesNotExistException("Book could not be found");
     }
 
+    /**
+     * @param name of user
+     * @return User object
+     * @throws UserOrBookDoesNotExistException if user is not found
+     */
     public User findUserByName(String name) throws UserOrBookDoesNotExistException {
         for (User user : users) {
             if (user.getName().equals(name)) {
@@ -53,22 +80,37 @@ public class LibrarySystem {
         throw new UserOrBookDoesNotExistException("User could not be found");
     }
 
+    /**
+     * @param user user who is borrowing the book
+     * @param book the book that is being borrowed
+     * @throws UserOrBookDoesNotExistException if user or book is not found in the system
+     */
     public void borrowBook(User user, Book book) throws UserOrBookDoesNotExistException {
         if (!users.contains(user)) {
             throw new UserOrBookDoesNotExistException("User could not be found");
         }
-
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
     }
 
+    /**
+     * @param facultyMember in charge of extending the lending period
+     * @param book that has been lent
+     * @param newDueDate new date of extended lending time
+     * @throws UserOrBookDoesNotExistException if the book is not found in the system
+     */
     public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) throws UserOrBookDoesNotExistException {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
     }
 
+    /**
+     * @param user user who is returning the book
+     * @param book the book that is being returned
+     * @throws UserOrBookDoesNotExistException if book or user cannot be found in the system
+     */
     public void returnBook(User user, Book book) throws UserOrBookDoesNotExistException {
         if (!users.contains(user)) {
             throw new UserOrBookDoesNotExistException("User could not be found");
