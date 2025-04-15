@@ -6,8 +6,8 @@ package is.hi.hbv202g.assignment8;
  */
 public class Main
 {
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
         LibrarySystem myLibrarySystem = new LibrarySystem();
+
     }
 }
