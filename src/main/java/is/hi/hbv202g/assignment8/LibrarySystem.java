@@ -95,6 +95,7 @@ public class LibrarySystem {
 
         Lending lending = new Lending(book, user);
         lendings.add(lending);
+        System.out.println(book.getTitle() + " lent to " + user.getName() + "successfully!");
     }
 
     /**
