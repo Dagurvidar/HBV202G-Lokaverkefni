@@ -10,6 +10,8 @@ public class Main {
         LibrarySystem system = new LibrarySystem();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
+        System.out.println("Filling library with books...");
+        CreateBooks.fillLibrary(system);
 
         while (running) {
             System.out.println("\n--- Library System Menu ---");
@@ -20,7 +22,8 @@ public class Main {
             System.out.println("5. Borrow book");
             System.out.println("6. Return book");
             System.out.println("7. Extend lending");
-            System.out.println("8. Quit");
+            System.out.println("8. List all books");
+            System.out.println("9. Quit");
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
@@ -107,6 +110,10 @@ public class Main {
                         break;
 
                     case 8:
+                        system.listAllBooks();
+                        break;
+
+                    case 9:
                         running = false;
                         System.out.println("Exiting system. Bye!");
                         break;
@@ -114,6 +121,9 @@ public class Main {
                     default:
                         System.out.println("Invalid choice.");
                 }
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }

@@ -4,25 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookSeries implements ReadingMaterial {
-    private boolean isAvailable = false;
-    private final List<ReadingMaterial> books;
+    private String title;
+    private final List<Book> books;
+    private final List<Author> authors;
 
-    public BookSeries(List<ReadingMaterial> books) {
+    public BookSeries(String title, List<Book> books, List<Author> authors) {
+        this.title = title;
         this.books = books;
+        this.authors = authors;
     }
 
     @Override
     public String getTitle() {
-        return "";
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
     public List<Author> getAuthors() {
-        return List.of();
+        return authors;
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @Override
     public boolean isAvailable() {
-        return isAvailable;
+        for (Book book : books) {
+            if (!book.isAvailable()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -11,11 +11,21 @@ public class LibrarySystem {
     private final List<Book> books = new ArrayList<>();
 
     public LibrarySystem() {
+    }
 
+    public void listAllBooks() {
+        if (books.isEmpty()) {
+            System.out.println("No books in the library.");
+        } else {
+            System.out.println("\n--- All Books in Library ---");
+            for (Book book : books) {
+                System.out.println("- " + book.getTitle() + " by " + book.getAuthors());
+            }
+        }
     }
 
     /**
-     * @param title of book
+     * @param title      of book
      * @param authorName name of author
      */
     public void addBookWithTitleAndNameOfSingleAuthor(String title, String authorName) {
@@ -23,7 +33,7 @@ public class LibrarySystem {
     }
 
     /**
-     * @param title of book
+     * @param title   of book
      * @param authors of book
      * @throws EmptyAuthorListException author list should not be empty
      */
@@ -36,7 +46,7 @@ public class LibrarySystem {
     }
 
     /**
-     * @param name of student
+     * @param name    of student
      * @param feePaid has the lending fee been paid
      */
     public void addStudentUser(String name, boolean feePaid) {
@@ -44,7 +54,7 @@ public class LibrarySystem {
     }
 
     /**
-     * @param name of staff member
+     * @param name       of staff member
      * @param department of staff member
      */
     public void addFacultyMemberUser(String name, String department) {
@@ -93,16 +103,19 @@ public class LibrarySystem {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
-
-        Lending lending = new Lending(book, user);
-        lendings.add(lending);
-        System.out.println(book.getTitle() + " lent to " + user.getName() + "successfully!");
+        if (book.isAvailable()) {
+            Lending lending = new Lending(book, user);
+            lendings.add(lending);
+            System.out.println(book.getTitle() + " lent to " + user.getName() + "successfully!");
+        } else {
+            System.out.println("Book is already being loaned");
+        }
     }
 
     /**
      * @param facultyMember in charge of extending the lending period
-     * @param book that has been lent
-     * @param newDueDate new date of extended lending time
+     * @param book          that has been lent
+     * @param newDueDate    new date of extended lending time
      * @throws UserOrBookDoesNotExistException if the book is not found in the system
      */
     public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) throws UserOrBookDoesNotExistException {
@@ -137,6 +150,7 @@ public class LibrarySystem {
         }
 
         for (Lending lends : lendings) {
+            lends.returnBook();
             lendings.remove(lends);
             System.out.println("Book" + book.getTitle() + "returned by " + user.getName() + ".");
             return;

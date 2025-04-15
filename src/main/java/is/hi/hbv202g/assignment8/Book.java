@@ -22,6 +22,14 @@ public class Book implements ReadingMaterial {
         this.authors = authors;
     }
 
+    public void lendOut() {
+        isAvailable = false;
+    }
+
+    public void returnBook() {
+        isAvailable = true;
+    }
+
     public void addAuthor(Author author) {
         this.authors.add(author);
     }
@@ -42,7 +50,6 @@ public class Book implements ReadingMaterial {
         }
         this.authors = authors;
     }
-
 
     public String getTitle() {
         return title;
