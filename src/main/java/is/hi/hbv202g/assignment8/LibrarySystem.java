@@ -1,6 +1,5 @@
 package is.hi.hbv202g.assignment8;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +120,11 @@ public class LibrarySystem {
     public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) throws UserOrBookDoesNotExistException {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
+        }
+
+        if (!users.contains(facultyMember)) {
+            System.out.println("Faculty member not found, lending failed");
+            return;
         }
 
         for (Lending lends : lendings) {
