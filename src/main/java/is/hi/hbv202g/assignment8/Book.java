@@ -3,7 +3,8 @@ package is.hi.hbv202g.assignment8;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book {
+public class Book implements ReadingMaterial {
+    private boolean isAvailable;
     private String title;
     private List<Author> authors = new ArrayList<>();
 
@@ -25,8 +26,14 @@ public class Book {
         this.authors.add(author);
     }
 
+    @Override
     public List<Author> getAuthors() {
         return authors;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
     public void setAuthors(List<Author> authors) throws EmptyAuthorListException {
