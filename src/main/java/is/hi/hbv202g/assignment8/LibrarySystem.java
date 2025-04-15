@@ -142,6 +142,4 @@ public class LibrarySystem {
 
         System.out.println("Book " + book.getTitle() + " was not registered as being lent to " + user.getName());
     }
-
-
 }
