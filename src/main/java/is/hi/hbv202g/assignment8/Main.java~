@@ -1,6 +1,10 @@
 package is.hi.hbv202g.assignment8;
 
+<<<<<<< HEAD
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -117,5 +121,16 @@ public class Main {
         }
 
         scanner.close();
+=======
+/**
+ * Hello world!
+ *
+ */
+public class Main
+{
+    public static void main( String[] args ) {
+        LibrarySystem myLibrarySystem = new LibrarySystem();
+
+>>>>>>> 78ffce2556df61f0c9ceff38888fc800cdbd84f0
     }
 }

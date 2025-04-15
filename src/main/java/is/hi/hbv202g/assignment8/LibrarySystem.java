@@ -57,7 +57,7 @@ public class LibrarySystem {
      */
     public Book findBookByTitle(String title) throws UserOrBookDoesNotExistException {
         for (Book book : books) {
-            if (book.getTitle().equals(title)) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
                 return book;
             }
         }
@@ -92,6 +92,9 @@ public class LibrarySystem {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
+
+        Lending lending = new Lending(book, user);
+        lendings.add(lending);
     }
 
     /**
@@ -104,6 +107,17 @@ public class LibrarySystem {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
+
+        for (Lending lends : lendings) {
+            if (lends.getBook().equals(book)) {
+                LocalDate currentDueDate = lends.getDueDate();
+                lends.setDueDate(currentDueDate.plusDays(30));
+                System.out.println("New due date is " + lends.getDueDate());
+                return;
+            }
+        }
+
+        System.out.println("Book was not being lent. Please lend the book first before extending lending period");
     }
 
     /**
@@ -119,6 +133,14 @@ public class LibrarySystem {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
+
+        for (Lending lends : lendings) {
+            lendings.remove(lends);
+            System.out.println("Book" + book.getTitle() + "returned by " + user.getName() + ".");
+            return;
+        }
+
+        System.out.println("Book " + book.getTitle() + " was not registered as being lent to " + user.getName());
     }
 
 
