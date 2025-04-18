@@ -7,9 +7,15 @@ public class BookSeries implements ReadingMaterial {
     private final List<Book> books;
     private final List<Author> authors;
 
-    public BookSeries(String title, List<Book> books, List<Author> authors) throws BookSeriesNotASeriesException{
+    public BookSeries(String title, List<Book> books, List<Author> authors)
+            throws BookSeriesNotASeriesException, EmptyAuthorListException {
+
         if (books.size() < 2) {
             throw new BookSeriesNotASeriesException("A book series requires more than one book");
+        }
+
+        if (authors.isEmpty()) {
+            throw new EmptyAuthorListException("Author list cannot be empty");
         }
 
         this.title = title;

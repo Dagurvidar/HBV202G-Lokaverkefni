@@ -8,17 +8,21 @@ public class LibrarySystem {
     private final List<User> users = new ArrayList<>();
     private final List<Lending> lendings = new ArrayList<>();
     private final List<Book> books = new ArrayList<>();
+    private final List<BookSeries> bookSeriesList = new ArrayList<>();
 
     public LibrarySystem() {
     }
 
     public void listAllBooks() {
-        if (books.isEmpty()) {
+        if (books.isEmpty() && bookSeriesList.isEmpty()) {
             System.out.println("No books in the library.");
         } else {
             System.out.println("\n--- All Books in Library ---");
             for (Book book : books) {
-                System.out.println("- " + book.getTitle() + " by " + book.getAuthors());
+                System.out.println("- " + book.getTitle() + ", by " + book.getAuthors());
+            }
+            for (BookSeries series : bookSeriesList) {
+                System.out.println("- " + series.getTitle() + ", by " + series.getAuthors());
             }
         }
     }
@@ -37,11 +41,21 @@ public class LibrarySystem {
      * @throws EmptyAuthorListException author list should not be empty
      */
     public void addBookWithTitleAndAuthorList(String title, List<Author> authors) throws EmptyAuthorListException {
-        if (authors == null || authors.isEmpty()) {
-            throw new EmptyAuthorListException("Author list cannot be empty");
-        }
-
         books.add(new Book(title, authors));
+    }
+
+    /**
+     * Books added by this method are also added to the library as individual books.
+     * It is assumed in this method that every book in a series has the same author(s).
+     * @param seriesTitle title of book series
+     * @param books list of books in series
+     * @param authors of books in series
+     * @throws EmptyAuthorListException author list should not be empty
+     */
+    public void addBookSeries(String seriesTitle, List<Book> books, List<Author> authors) throws EmptyAuthorListException, BookSeriesNotASeriesException {
+        BookSeries series = new BookSeries(seriesTitle, books, authors);
+        bookSeriesList.add(series);
+        books.addAll(series.getBooks());
     }
 
     /**
@@ -99,9 +113,11 @@ public class LibrarySystem {
         if (!users.contains(user)) {
             throw new UserOrBookDoesNotExistException("User could not be found");
         }
+
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
+
         if (book.isAvailable()) {
             Lending lending = new Lending(book, user);
             lendings.add(lending);
@@ -117,7 +133,7 @@ public class LibrarySystem {
      * @param newDueDate    new date of extended lending time
      * @throws UserOrBookDoesNotExistException if the book is not found in the system
      */
-    public void extendLending(FacultyMember facultyMember, Book book, LocalDate newDueDate) throws UserOrBookDoesNotExistException {
+    public void extendLending(FacultyMember facultyMember, Book book, int daysToExtend) throws UserOrBookDoesNotExistException {
         if (!books.contains(book)) {
             throw new UserOrBookDoesNotExistException("Book could not be found");
         }
@@ -130,7 +146,7 @@ public class LibrarySystem {
         for (Lending lends : lendings) {
             if (lends.getBook().equals(book)) {
                 LocalDate currentDueDate = lends.getDueDate();
-                lends.setDueDate(currentDueDate.plusDays(30));
+                lends.setDueDate(currentDueDate.plusDays(daysToExtend));
                 System.out.println("New due date is " + lends.getDueDate());
                 return;
             }

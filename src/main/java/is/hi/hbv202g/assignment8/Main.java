@@ -29,6 +29,16 @@ public class Main {
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
+            // TODO breyta villu meðhöndlun þannig það grípi sérhverja EmptyAuthorListException o.s.frv. en ekki bara Exception
+            // TODO Muna fyrir þetta^ að grípa villuna og nota e.getMessage til að fá rétt skilaboð.
+            // TODO Þetta að neðan koma einhvern veginn
+            /**
+             * Choose an option: 5
+             * Enter user name: dagur
+             * Enter book title: the two towers
+             * Book is already being loaned
+             * Book borrowed.
+             */
             try {
                 switch (choice) {
                     case 1:
@@ -98,14 +108,18 @@ public class Main {
                     case 7:
                         System.out.print("Enter faculty member name: ");
                         String fmName = scanner.nextLine();
+
                         System.out.print("Enter book title: ");
                         String bookToExtend = scanner.nextLine();
-                        System.out.print("Enter new due date (yyyy-mm-dd): ");
-                        String dateStr = scanner.nextLine();
-                        LocalDate newDate = LocalDate.parse(dateStr);
+
+                        System.out.print("Enter number of days to extend: ");
+                        int daysToExtend = scanner.nextInt();
+                        scanner.nextLine();
+
                         FacultyMember fm = (FacultyMember) system.findUserByName(fmName);
                         Book bookExt = system.findBookByTitle(bookToExtend);
-                        system.extendLending(fm, bookExt, newDate);
+
+                        system.extendLending(fm, bookExt, daysToExtend);
                         System.out.println("Lending extended.");
                         break;
 

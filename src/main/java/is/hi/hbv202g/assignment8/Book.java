@@ -39,16 +39,16 @@ public class Book implements ReadingMaterial {
         return authors;
     }
 
-    @Override
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
     public void setAuthors(List<Author> authors) throws EmptyAuthorListException {
         if (authors == null || authors.isEmpty()) {
             throw new EmptyAuthorListException("Author list cannot be empty");
         }
         this.authors = authors;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
     public String getTitle() {
