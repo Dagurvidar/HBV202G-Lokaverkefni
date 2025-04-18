@@ -1,6 +1,5 @@
 package is.hi.hbv202g.assignment8;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookSeries implements ReadingMaterial {
@@ -8,7 +7,11 @@ public class BookSeries implements ReadingMaterial {
     private final List<Book> books;
     private final List<Author> authors;
 
-    public BookSeries(String title, List<Book> books, List<Author> authors) {
+    public BookSeries(String title, List<Book> books, List<Author> authors) throws BookSeriesNotASeriesException{
+        if (books.size() < 2) {
+            throw new BookSeriesNotASeriesException("A book series requires more than one book");
+        }
+
         this.title = title;
         this.books = books;
         this.authors = authors;
