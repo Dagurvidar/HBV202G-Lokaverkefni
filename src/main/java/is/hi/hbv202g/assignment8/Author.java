@@ -7,7 +7,7 @@ public class Author {
     private String name;
 
     /**
-     * Constructs a new Author with the given name.
+     * Constructs a new {@code Author} with the given name.
      *
      * @param name the name of the author
      */
@@ -18,7 +18,7 @@ public class Author {
     /**
      * Returns the name of the author.
      *
-     * @return the author's name
+     * @return the author's name as a {@code String}
      */
     public String getName() {
         return name;
@@ -27,12 +27,17 @@ public class Author {
     /**
      * Sets a new name for the author.
      *
-     * @param name the new name of the author
+     * @param name the new name to set
      */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Returns the string representation of the author.
+     *
+     * @return the author's name
+     */
     @Override
     public String toString() {
         return name;

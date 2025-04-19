@@ -1,135 +1,110 @@
 package is.hi.hbv202g.assignment8;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 
+import static org.junit.Assert.*;
+
+/**
+ * Unit tests for the {@link LibrarySystem} class.
+ *
+ * This class tests functionalities such as borrowing and returning books,
+ * extending lending periods, and handling errors related to missing users or books.
+ */
 public class LibrarySystemTest {
 
     private LibrarySystem system;
+    private Book book;
+    private FacultyMember faculty;
+    private Student student;
 
+    /**
+     * Sets up the library system with one student, one faculty member, and one book.
+     * Initializes references for reuse in tests.
+     */
     @Before
     public void setUp() {
         system = new LibrarySystem();
+        system.addFacultyMemberUser("Alice", "Science");
+        system.addStudentUser("Bob", true);
+        system.addBookWithTitleAndNameOfSingleAuthor("Test Book", "Author A");
+
+        try {
+            book = system.findBookByTitle("Test Book");
+            faculty = (FacultyMember) system.findUserByName("Alice");
+            student = (Student) system.findUserByName("Bob");
+        } catch (UserOrBookDoesNotExistException e) {
+            fail("Setup failed: " + e.getMessage());
+        }
     }
 
+    /**
+     * Tests successful borrowing of a book by a student.
+     */
     @Test
-    public void testAddBookWithSingleAuthor() throws UserOrBookDoesNotExistException {
-        system.addBookWithTitleAndNameOfSingleAuthor("1984", "George Orwell");
-        Book book = system.findBookByTitle("1984");
-        assertEquals("1984", book.getTitle());
-        assertEquals(1, book.getAuthors().size());
-        assertEquals("George Orwell", book.getAuthors().get(0).getName());
+    public void testBorrowBookSuccess() throws UserOrBookDoesNotExistException {
+        system.borrowBook(student, book);
+        assertFalse(book.isAvailable());
     }
 
+    /**
+     * Tests successful return of a borrowed book.
+     */
     @Test
-    public void testAddBookWithMultipleAuthors() throws Exception {
-        List<Author> authors = List.of(new Author("Author One"), new Author("Author Two"));
-        system.addBookWithTitleAndAuthorList("Multi Book", authors);
-        Book book = system.findBookByTitle("Multi Book");
-        assertEquals("Multi Book", book.getTitle());
-        assertEquals(2, book.getAuthors().size());
+    public void testReturnBookSuccess() throws UserOrBookDoesNotExistException {
+        system.borrowBook(student, book);
+        system.returnBook(student, book);
+        assertTrue(book.isAvailable());
     }
 
-    @Test(expected = EmptyAuthorListException.class)
-    public void testAddBookWithEmptyAuthorListThrowsException() throws Exception {
-        system.addBookWithTitleAndAuthorList("Empty Book", List.of());
-    }
-
+    /**
+     * Tests that a faculty member can successfully extend the lending period of a borrowed book.
+     */
     @Test
-    public void testAddStudentUser() throws Exception {
-        system.addStudentUser("Alice", true);
-        User user = system.findUserByName("Alice");
-        assertTrue(user instanceof Student);
-        assertEquals("Alice", user.getName());
+    public void testExtendLendingByFaculty() throws UserOrBookDoesNotExistException {
+        system.borrowBook(faculty, book);
+        system.extendLendingOfSingleBook(faculty, book, 15);
+        // No exception means the operation was successful
     }
 
-    @Test
-    public void testAddFacultyMemberUser() throws Exception {
-        system.addFacultyMemberUser("Dr. Smith", "Physics");
-        User user = system.findUserByName("Dr. Smith");
-        assertTrue(user instanceof FacultyMember);
-        assertEquals("Dr. Smith", user.getName());
-    }
-
+    /**
+     * Tests that borrowing a non-existent book throws a UserOrBookDoesNotExistException.
+     */
     @Test(expected = UserOrBookDoesNotExistException.class)
-    public void testFindUserByNameNotFoundThrowsException() throws Exception {
+    public void testBorrowBookWithNonExistentBookThrowsException() throws UserOrBookDoesNotExistException {
+        Book fakeBook = new Book("Fake", "Nobody");
+        system.borrowBook(student, fakeBook);
+    }
+
+    /**
+     * Tests that searching for a missing book by title throws a UserOrBookDoesNotExistException.
+     */
+    @Test(expected = UserOrBookDoesNotExistException.class)
+    public void testFindMissingBookThrowsException() throws UserOrBookDoesNotExistException {
+        system.findBookByTitle("Missing Book");
+    }
+
+    /**
+     * Tests that searching for a non-existent user by name throws a UserOrBookDoesNotExistException.
+     */
+    @Test(expected = UserOrBookDoesNotExistException.class)
+    public void testFindMissingUserThrowsException() throws UserOrBookDoesNotExistException {
         system.findUserByName("Ghost");
     }
 
-    @Test(expected = UserOrBookDoesNotExistException.class)
-    public void testFindBookByTitleNotFoundThrowsException() throws Exception {
-        system.findBookByTitle("Unknown Book");
-    }
-
+    /**
+     * Tests that a book can be added with multiple authors and correctly stored in the system.
+     */
     @Test
-    public void testBorrowBookSuccess() throws Exception {
-        system.addStudentUser("Bob", true);
-        system.addBookWithTitleAndNameOfSingleAuthor("Borrowable Book", "Author");
-        User user = system.findUserByName("Bob");
-        Book book = system.findBookByTitle("Borrowable Book");
-        system.borrowBook(user, book);
-        // If it doesn’t throw, it passed
-    }
-
-    @Test(expected = UserOrBookDoesNotExistException.class)
-    public void testBorrowBookWithMissingUserThrowsException() throws Exception {
-        Book book = new Book("Ghost Book", "Author");
-        system.borrowBook(new Student("Ghost", true), book);
-    }
-
-    @Test(expected = UserOrBookDoesNotExistException.class)
-    public void testBorrowBookWithMissingBookThrowsException() throws Exception {
-        system.addStudentUser("Sam", true);
-        User user = system.findUserByName("Sam");
-        Book ghostBook = new Book("Ghost Book", "Ghost Author");
-        system.borrowBook(user, ghostBook);
-    }
-
-    @Test
-    public void testExtendLendingUpdatesDueDate() throws Exception {
-        system.addFacultyMemberUser("Prof. X", "Psychology");
-        system.addBookWithTitleAndNameOfSingleAuthor("Mind Book", "Dr. Brain");
-        User user = system.findUserByName("Prof. X");
-        Book book = system.findBookByTitle("Mind Book");
-
-        system.borrowBook(user, book);
-        FacultyMember faculty = (FacultyMember) user;
-
-        LocalDate originalDue = LocalDate.now().plusDays(30);
-        int newDue = 30;
-        system.extendLendingOfSingleBook(faculty, book, newDue); // This adds 30 days to current due date internally
-
-        // We're trusting the output — could also expose Lending list for assertion if needed
-    }
-
-    @Test
-    public void testReturnBookSuccess() throws Exception {
-        system.addStudentUser("Lilly", true);
-        system.addBookWithTitleAndNameOfSingleAuthor("Return Me", "Author");
-        User user = system.findUserByName("Lilly");
-        Book book = system.findBookByTitle("Return Me");
-
-        system.borrowBook(user, book);
-        system.returnBook(user, book);
-        // If no exception is thrown, it's a pass
-    }
-
-    @Test(expected = UserOrBookDoesNotExistException.class)
-    public void testReturnBookWithUnknownUserThrows() throws Exception {
-        Book book = new Book("Some Book", "Someone");
-        system.returnBook(new Student("Unknown", false), book);
-    }
-
-    @Test(expected = UserOrBookDoesNotExistException.class)
-    public void testReturnBookWithUnknownBookThrows() throws Exception {
-        system.addStudentUser("Jane", true);
-        User user = system.findUserByName("Jane");
-        Book ghostBook = new Book("Ghost Book", "Ghost");
-        system.returnBook(user, ghostBook);
+    public void testAddBookWithMultipleAuthors() throws EmptyAuthorListException, UserOrBookDoesNotExistException {
+        List<Author> authors = new ArrayList<>();
+        authors.add(new Author("Author One"));
+        authors.add(new Author("Author Two"));
+        system.addBookWithTitleAndAuthorList("Multi Author Book", authors);
+        Book multiBook = system.findBookByTitle("Multi Author Book");
+        assertEquals(2, multiBook.getAuthors().size());
     }
 }

@@ -3,7 +3,18 @@ package is.hi.hbv202g.assignment8;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for creating and adding books and book series
+ * to a LibrarySystem instance.
+ */
 public class CreateBooks {
+
+    /**
+     * Populates the given LibrarySystem with a selection of standalone books
+     * and book series.
+     *
+     * @param librarySystem the LibrarySystem to populate
+     */
     public static void fillLibrary(LibrarySystem librarySystem) {
         try {
             // === Standalone books ===
