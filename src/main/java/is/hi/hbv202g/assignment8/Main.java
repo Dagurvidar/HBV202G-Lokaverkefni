@@ -27,7 +27,7 @@ public class Main {
         while (running) {
             System.out.println("\n--- Library System Menu ---");
             System.out.println("1. Add a book or book series");
-            System.out.println("2. Add a user");
+            System.out.println("2. Add a user or faculty member");
             System.out.println("3. Borrow book or book series");
             System.out.println("4. Return book or book series");
             System.out.println("5. Extend lending");

@@ -21,10 +21,13 @@ public class LibrarySystem {
         if (books.isEmpty() && bookSeriesList.isEmpty()) {
             System.out.println("No books in the library.");
         } else {
-            System.out.println("\n--- All Books in Library ---");
+            System.out.println("\n--- All Books in Library (includes those in series ---");
             for (Book book : books) {
-                System.out.println("- " + book.getTitle() + ", by " + book.getAuthors());
+                System.out.println("- " + book.getTitle() + ", by " + book.getAuthors()
+                + "\t -" + (book.isAvailable() ? "available" : "unavailable"));
             }
+
+            System.out.println("\n--- All book series ---");
             for (BookSeries series : bookSeriesList) {
                 System.out.println("- " + series.getTitle() + ", by " + series.getAuthors());
             }
@@ -64,7 +67,7 @@ public class LibrarySystem {
     public void addBookSeriesWithTitleAndNameOfSingleAuthor(String seriesTitle, List<Book> books, String authorName) throws EmptyAuthorListException, BookSeriesNotASeriesException {
         BookSeries series = new BookSeries(seriesTitle, books, authorName);
         bookSeriesList.add(series);
-        books.addAll(series.getBooks());
+        this.books.addAll(series.getBooks());
     }
 
     /**
@@ -79,7 +82,7 @@ public class LibrarySystem {
     public void addBookSeriesWithTitleAndAuthorList(String seriesTitle, List<Book> books, List<Author> authors) throws EmptyAuthorListException, BookSeriesNotASeriesException {
         BookSeries series = new BookSeries(seriesTitle, books, authors);
         bookSeriesList.add(series);
-        books.addAll(series.getBooks());
+        this.books.addAll(series.getBooks());
     }
 
     /**
@@ -172,7 +175,7 @@ public class LibrarySystem {
         if (book.isAvailable()) {
             Lending lending = new Lending(book, user);
             lendings.add(lending);
-            System.out.println(book.getTitle() + " lent to " + user.getName() + "successfully!");
+            System.out.println(book.getTitle() + " lent to " + user.getName() + " successfully!");
         } else {
             System.out.println("Book is already being loaned");
         }
@@ -292,7 +295,7 @@ public class LibrarySystem {
     /**
      * Returns a book from a user.
      *
-     * @param user The user returning the book.
+     * @param user       The user returning the book.
      * @param bookSeries The book series being returned.
      * @throws UserOrBookDoesNotExistException If the user or the book is not found in the system.
      */

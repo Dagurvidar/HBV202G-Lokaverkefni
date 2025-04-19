@@ -19,6 +19,8 @@ public class BookSeries implements ReadingMaterial {
         this.title = title;
         this.books = books;
         this.authors.add(new Author(authorName));
+
+        putBooksIntoSeries();
     }
 
     public BookSeries(String title, List<Book> books, List<Author> authors)
@@ -35,6 +37,14 @@ public class BookSeries implements ReadingMaterial {
         this.title = title;
         this.books = books;
         this.authors = authors;
+
+        putBooksIntoSeries();
+    }
+
+    private void putBooksIntoSeries() {
+        for (Book book : this.books) {
+            book.setInSeries(true);
+        }
     }
 
     public void borrowSeries() {
