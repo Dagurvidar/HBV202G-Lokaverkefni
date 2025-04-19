@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Represents a book in the library system, which may have one or more authors.
+ * A book can be standalone or part of a book series.
  */
 public class Book implements ReadingMaterial {
     private boolean isAvailable = true;
@@ -39,18 +40,34 @@ public class Book implements ReadingMaterial {
         this.authors = authors;
     }
 
+    /**
+     * Marks the book as borrowed (i.e., unavailable).
+     */
     public void borrowBook() {
         isAvailable = false;
     }
 
+    /**
+     * Marks the book as returned (i.e., available).
+     */
     public void returnBook() {
         isAvailable = true;
     }
 
+    /**
+     * Sets whether this book is part of a book series.
+     *
+     * @param isInSeries true if part of a series, false otherwise
+     */
     public void setInSeries(boolean isInSeries) {
         this.isInSeries = isInSeries;
     }
 
+    /**
+     * Checks whether this book is part of a series.
+     *
+     * @return true if the book is part of a series, false otherwise
+     */
     public boolean isInSeries() {
         return isInSeries;
     }
@@ -67,7 +84,7 @@ public class Book implements ReadingMaterial {
     /**
      * Returns the list of authors for this book.
      *
-     * @return a list of authors
+     * @return a list of {@code Author} objects
      */
     @Override
     public List<Author> getAuthors() {
@@ -87,6 +104,11 @@ public class Book implements ReadingMaterial {
         this.authors = authors;
     }
 
+    /**
+     * Checks whether the book is currently available.
+     *
+     * @return true if the book is available, false otherwise
+     */
     @Override
     public boolean isAvailable() {
         return isAvailable;
@@ -95,7 +117,7 @@ public class Book implements ReadingMaterial {
     /**
      * Returns the title of the book.
      *
-     * @return the book title
+     * @return the title as a {@code String}
      */
     public String getTitle() {
         return title;
@@ -104,10 +126,9 @@ public class Book implements ReadingMaterial {
     /**
      * Sets the title of the book.
      *
-     * @param title the new book title
+     * @param title the new title to set
      */
     public void setTitle(String title) {
         this.title = title;
     }
-
 }
