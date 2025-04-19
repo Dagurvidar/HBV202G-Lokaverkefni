@@ -5,7 +5,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Main class serves as the entry point for interacting with the Library System.
+ * It provides a command-line interface for managing books, users, and lendings.
+ */
 public class Main {
+
+    /**
+     * The main method starts the library system and displays the menu for user interactions.
+     * It allows users to choose actions like adding books, borrowing and returning books,
+     * and extending lending periods, while handling user input through a scanner.
+     *
+     * @param args Command-line arguments (not used in this application).
+     */
     public static void main(String[] args) {
         LibrarySystem system = new LibrarySystem();
         Scanner scanner = new Scanner(System.in);
@@ -42,6 +54,7 @@ public class Main {
             try {
                 switch (choice) {
                     case 1:
+                        // Add a book with a single author
                         System.out.print("Enter book title: ");
                         String title = scanner.nextLine();
                         System.out.print("Enter author name: ");
@@ -51,6 +64,7 @@ public class Main {
                         break;
 
                     case 2:
+                        // Add a book with multiple authors
                         System.out.print("Enter book title: ");
                         String multiTitle = scanner.nextLine();
                         List<Author> authors = new ArrayList<>();
@@ -65,6 +79,7 @@ public class Main {
                         break;
 
                     case 3:
+                        // Add a student user
                         System.out.print("Enter student name: ");
                         String studentName = scanner.nextLine();
                         System.out.print("Has fee been paid? (true/false): ");
@@ -75,6 +90,7 @@ public class Main {
                         break;
 
                     case 4:
+                        // Add a faculty member user
                         System.out.print("Enter faculty member name: ");
                         String facultyName = scanner.nextLine();
                         System.out.print("Enter department: ");
@@ -84,6 +100,7 @@ public class Main {
                         break;
 
                     case 5:
+                        // Borrow a book
                         System.out.print("Enter user name: ");
                         String borrower = scanner.nextLine();
                         System.out.print("Enter book title: ");
@@ -95,6 +112,7 @@ public class Main {
                         break;
 
                     case 6:
+                        // Return a book
                         System.out.print("Enter user name: ");
                         String returner = scanner.nextLine();
                         System.out.print("Enter book title: ");
@@ -106,6 +124,7 @@ public class Main {
                         break;
 
                     case 7:
+                        // Extend lending for a book
                         System.out.print("Enter faculty member name: ");
                         String fmName = scanner.nextLine();
 
@@ -124,25 +143,30 @@ public class Main {
                         break;
 
                     case 8:
+                        // List all books and book series
                         system.listAllBooks();
                         break;
 
                     case 9:
+                        // Exit the system
                         running = false;
                         System.out.println("Exiting system. Bye!");
                         break;
 
                     default:
+                        // Invalid option
                         System.out.println("Invalid choice.");
                 }
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
+                // Handle errors gracefully
                 System.out.println("Error: " + e.getMessage());
             }
         }
 
         scanner.close();
+
     }
 }
