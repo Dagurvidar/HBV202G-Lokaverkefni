@@ -17,7 +17,6 @@ public class BookSeriesTest {
     public void setUp() {
         tolkien = new Author("J.R.R. Tolkien");
 
-        // Create books for the test, ensuring no empty author lists
         try {
             book1 = new Book("The Fellowship of the Ring", List.of(tolkien)); // Ensure at least one author
             book2 = new Book("The Two Towers", List.of(tolkien));            // Ensure at least one author
@@ -41,7 +40,7 @@ public class BookSeriesTest {
 
     @Test
     public void testBookSeriesAvailabilityWhenAllBooksAreAvailable() {
-        assertTrue(lotrSeries.isAvailable());
+        assertTrue(lotrSeries.isAvailable());  // Assuming both books are available
     }
 
     @Test

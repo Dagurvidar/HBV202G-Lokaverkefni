@@ -100,11 +100,13 @@ public class LibrarySystemTest {
         system.borrowBook(user, book);
         FacultyMember faculty = (FacultyMember) user;
 
-
+        // Original due date is set to 30 days from now
         LocalDate originalDueDate = LocalDate.now().plusDays(30);
 
+        // Call the extendLending method to extend by 30 days
+        system.extendLending(faculty, book, 30); // Pass the number of days to extend by
 
-        system.extendLending(faculty, book, 30);
+        // We're trusting the output — alternatively, you could expose the lending list for assertion
     }
 
     @Test
