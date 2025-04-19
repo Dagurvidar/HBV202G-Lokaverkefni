@@ -1,13 +1,17 @@
-# HBV202GAssignment8
-A Maven project skeleton. The provided Maven POM sets the Java version to 17.
+## HBV202G-Lokaverkefni
 
-All classes need to be located in Java package `is.hi.hbv202g.assignment8`.
+This project is a simple library system that allows users to borrow, return, and extend due dates for books. It is implemented in Java.
 
-Class and method names of the submitted solution need to be **exactly** the same 
-as in the UML class diagram in the assignment PDF. 
+## Maven Goals
+- `mvn clean install` - Clean the project and build it.
+- `mvn javadoc:javadoc` - Generate Javadoc documentation.
 
-If you like, you can import from project directory `UML` the file 
-`library_system.uxf` into the online UML editor https://www.umletino.com/ 
-and copy/paste from there class and method names: click on a class and then, 
-you can copy from the `properties` window on the right hand side class 
-and method names.
+## How to Run
+1. Clone this repository to your computer.
+2. Make sure you have Maven and Java installed.
+3. Open the command line (or terminal).
+4. Run `mvn clean install` to build the project.
+5. To run the program, use `mvn exec:java`.
+
+## Design Documentation
+- For more detailed design information, including the UML class diagram and design patterns, check out the [design documentation](docs/design.md).
