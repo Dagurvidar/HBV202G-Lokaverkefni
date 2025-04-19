@@ -6,10 +6,9 @@ Here is the UML class diagram that shows the structure of the system.
 ![UML Diagram](img.png)
 
 ## Design Patterns Used
-1. **Factory Pattern**: The `LibrarySystem` uses a factory-like pattern to create and manage users and books.
-2. **Observer Pattern**: The lending system follows an observer pattern, where the due dates are observed by users.
+1. **Composite Pattern**: The `LibrarySystem` uses a composite pattern to create books and book series
 
-## Class Descriptions
-- **LibrarySystem**: Manages books, users, and lending.
-- **Book**: Represents a book with title and author(s).
-- **User**: Represents a user (either student or faculty).
+## Class Descriptions for a Composite Design pattern
+- **ReadingMaterial**: a common interface for books and book series.
+- **Book**: Represents a book that acts as a Leaf of ReadingMaterial.
+- **BookSeries**: Represents a book series that acts as a Composite of ReadingMaterial and can contain Leaf of Book objects.

@@ -24,6 +24,8 @@ public class BookSeries implements ReadingMaterial {
         this.title = title;
         this.books = books;
         this.authors.add(new Author(authorName));
+
+        putBooksIntoSeries();
     }
 
 
@@ -41,6 +43,14 @@ public class BookSeries implements ReadingMaterial {
         this.title = title;
         this.books = books;
         this.authors = authors;
+
+        putBooksIntoSeries();
+    }
+
+    private void putBooksIntoSeries() {
+        for (Book book : this.books) {
+            book.setInSeries(true);
+        }
     }
 
 
