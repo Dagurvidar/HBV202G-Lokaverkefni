@@ -38,7 +38,7 @@ public class Book implements ReadingMaterial {
         this.authors = authors;
     }
 
-    public void lendOut() {
+    public void borrowBook() {
         isAvailable = false;
     }
 

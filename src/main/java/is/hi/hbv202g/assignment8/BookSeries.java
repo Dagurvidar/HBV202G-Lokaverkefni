@@ -1,5 +1,6 @@
 package is.hi.hbv202g.assignment8;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,15 +12,21 @@ public class BookSeries implements ReadingMaterial {
     private final List<Book> books;
     private final List<Author> authors;
 
-    /**
-     * Constructs a BookSeries object.
-     *
-     * @param title   the title of the series
-     * @param books   the list of books in the series
-     * @param authors the list of authors
-     * @throws BookSeriesNotASeriesException if there are fewer than 2 books
-     * @throws EmptyAuthorListException      if the author list is empty
-     */
+
+    public BookSeries(String title, List<Book> books, String authorName)
+            throws BookSeriesNotASeriesException {
+        this.authors = new ArrayList<>();
+
+        if (books.size() < 2) {
+            throw new BookSeriesNotASeriesException("A book series requires more than one book");
+        }
+
+        this.title = title;
+        this.books = books;
+        this.authors.add(new Author(authorName));
+    }
+
+
     public BookSeries(String title, List<Book> books, List<Author> authors)
             throws BookSeriesNotASeriesException, EmptyAuthorListException {
 
@@ -36,11 +43,22 @@ public class BookSeries implements ReadingMaterial {
         this.authors = authors;
     }
 
-    /**
-     * Returns the title of the book series.
-     *
-     * @return the title of the series
-     */
+
+    public void borrowSeries() {
+        if (isAvailable()) {
+            for (Book book : books) {
+                book.borrowBook();
+            }
+        }
+    }
+
+    public void returnSeries() {
+        for (Book book : books) {
+            book.returnBook();
+        }
+    }
+
+
     @Override
     public String getTitle() {
         return title;
