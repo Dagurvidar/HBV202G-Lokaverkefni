@@ -1,5 +1,6 @@
 package is.hi.hbv202g.assignment8;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateBooks {
@@ -12,38 +13,25 @@ public class CreateBooks {
 
             // === Book Series: The Lord of the Rings ===
             Author tolkien = new Author("J.R.R. Tolkien");
-
-            Book fellowship = new Book("The Fellowship of the Ring", List.of(tolkien));
-            Book twoTowers = new Book("The Two Towers", List.of(tolkien));
-            Book returnKing = new Book("The Return of the King", List.of(tolkien));
-
-            List<Book> lotrBooks = List.of(fellowship, twoTowers, returnKing);
-            BookSeries lotrSeries = new BookSeries("The Lord of the Rings", lotrBooks, List.of(tolkien));
-
-            // Register each book from the series individually
-            for (Book book : lotrBooks) {
-                librarySystem.addBookWithTitleAndAuthorList(book.getTitle(), book.getAuthors());
-            }
+            List<Book> lotrBooks = new ArrayList<>();
+            lotrBooks.add(new Book("The Fellowship of the Ring", tolkien.getName()));
+            lotrBooks.add(new Book("The Two Towers", tolkien.getName()));
+            lotrBooks.add(new Book("The Return of the King", tolkien.getName()));
+            librarySystem.addBookSeriesWithTitleAndNameOfSingleAuthor("Lord of the Rings", lotrBooks, tolkien.getName());
 
             // === Book Series: His Dark Materials ===
             Author pullman = new Author("Philip Pullman");
-
-            Book northernLights = new Book("Northern Lights", List.of(pullman));
-            Book subtleKnife = new Book("The Subtle Knife", List.of(pullman));
-            Book amberSpyglass = new Book("The Amber Spyglass", List.of(pullman));
-
-            List<Book> hdmBooks = List.of(northernLights, subtleKnife, amberSpyglass);
-            BookSeries hisDarkMaterials = new BookSeries("His Dark Materials", hdmBooks, List.of(pullman));
-
-            // Register each book from this series too
-            for (Book book : hdmBooks) {
-                librarySystem.addBookWithTitleAndAuthorList(book.getTitle(), book.getAuthors());
-            }
+            List<Book> hdmBooks = new ArrayList<>();
+            hdmBooks.add(new Book("Northern Lights", pullman.getName()));
+            hdmBooks.add(new Book("The Subtle Knife", pullman.getName()));
+            hdmBooks.add(new Book("The Amber Spyglass", pullman.getName()));
+            librarySystem.addBookSeriesWithTitleAndNameOfSingleAuthor("His Dark Materials", hdmBooks, pullman.getName());
 
             System.out.println("Library filled successfully!");
 
-        } catch (EmptyAuthorListException e) {
-            System.err.println("Failed to add book(s) due to missing author(s): " + e.getMessage());
+        } catch (EmptyAuthorListException | BookSeriesNotASeriesException e) {
+            System.err.println("Failed to add book(s): " + e.getMessage());
+
         }
     }
 }

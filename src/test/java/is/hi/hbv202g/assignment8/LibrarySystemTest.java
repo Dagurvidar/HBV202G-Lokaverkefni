@@ -102,7 +102,7 @@ public class LibrarySystemTest {
 
         LocalDate originalDue = LocalDate.now().plusDays(30);
         LocalDate newDue = originalDue.plusDays(30);
-        system.extendLending(faculty, book, newDue); // This adds 30 days to current due date internally
+        system.extendLendingOfSingleBook(faculty, book, newDue); // This adds 30 days to current due date internally
 
         // We're trusting the output — could also expose Lending list for assertion if needed
     }

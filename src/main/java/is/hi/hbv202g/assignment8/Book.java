@@ -7,7 +7,8 @@ import java.util.List;
  * Represents a book in the library system, which may have one or more authors.
  */
 public class Book implements ReadingMaterial {
-    private boolean isAvailable;
+    private boolean isAvailable = true;
+    private boolean isInSeries = false;
     private String title;
     private List<Author> authors = new ArrayList<>();
 
@@ -38,12 +39,20 @@ public class Book implements ReadingMaterial {
         this.authors = authors;
     }
 
-    public void lendOut() {
+    public void borrowBook() {
         isAvailable = false;
     }
 
     public void returnBook() {
         isAvailable = true;
+    }
+
+    public void setInSeries(boolean isInSeries) {
+        this.isInSeries = isInSeries;
+    }
+
+    public boolean isInSeries() {
+        return isInSeries;
     }
 
     /**
