@@ -1,95 +1,85 @@
 package is.hi.hbv202g.assignment8;
 
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookSeriesTest {
-    private BookSeries lotrSeries;
     private Book book1;
     private Book book2;
-    private Author tolkien;
+    private Book book3;
+    private List<Book> books;
+    private BookSeries bookSeries;
+    private Author author;
 
     @Before
-    public void setUp() {
-        tolkien = new Author("J.R.R. Tolkien");
+    public void setUp() throws Exception {
+        book1 = new Book("Book One", "Author A");
+        book2 = new Book("Book Two", "Author A");
+        book3 = new Book("Book Three", "Author A");
+        books = new ArrayList<>(Arrays.asList(book1, book2, book3));
+        author = new Author("Author A");
 
-        // Create books for the test, ensuring no empty author lists
-        try {
-            book1 = new Book("The Fellowship of the Ring", List.of(tolkien)); // Ensure at least one author
-            book2 = new Book("The Two Towers", List.of(tolkien));            // Ensure at least one author
+        List<Author> authors = new ArrayList<>();
+        authors.add(author);
 
-            List<Book> lotrBooks = List.of(book1, book2);
-            lotrSeries = new BookSeries("The Lord of the Rings", lotrBooks, List.of(tolkien));
-        } catch (EmptyAuthorListException | BookSeriesNotASeriesException e) {
-            e.printStackTrace();
-        }
+        bookSeries = new BookSeries("Awesome Series", books, authors);
     }
 
     @Test
-    public void testBookSeriesTitle() {
-        assertEquals("The Lord of the Rings", lotrSeries.getTitle());
+    public void testBookSeriesIsAvailableInitially() {
+        assertTrue(bookSeries.isAvailable());
     }
 
     @Test
-    public void testBookSeriesAuthors() {
-        assertEquals("J.R.R. Tolkien", lotrSeries.getAuthors().get(0).getName());
-    }
-
-    @Test
-    public void testBookSeriesAvailabilityWhenAllBooksAreAvailable() {
-        assertTrue(lotrSeries.isAvailable());
-    }
-
-    @Test
-    public void testBookSeriesAvailabilityWhenOneBookIsUnavailable() {
-        book1.lendOut();
-
-        assertFalse(lotrSeries.isAvailable());
-    }
-
-    @Test
-    public void testCreateBookSeriesWithLessThanTwoBooksThrowsException() {
-        try {
-            BookSeries singleBookSeries = new BookSeries("Single Book Series", List.of(book1), List.of(tolkien));
-            fail("Expected BookSeriesNotASeriesException to be thrown");
-        } catch (BookSeriesNotASeriesException e) {
-            assertEquals("A book series requires more than one book", e.getMessage());
-        } catch (EmptyAuthorListException e) {
-            fail("Expected BookSeriesNotASeriesException, but got EmptyAuthorListException");
-        }
-    }
-
-    @Test
-    public void testCreateBookSeriesWithEmptyAuthorListThrowsException() {
-        try {
-            List<Book> booksWithoutAuthors = List.of(new Book("No Author Book", List.of()));  // Ensure non-empty author list here
-            new BookSeries("Invalid Book Series", booksWithoutAuthors, List.of()); // Empty authors list here is fine as exception
-            fail("Expected EmptyAuthorListException to be thrown");
-        } catch (EmptyAuthorListException e) {
-            assertEquals("Author list cannot be empty", e.getMessage());
-        } catch (BookSeriesNotASeriesException e) {
-            fail("Expected EmptyAuthorListException, but got BookSeriesNotASeriesException");
-        }
-    }
-
-    @Test
-    public void testBookAvailabilityAfterReturningBook() {
-
-        book1.lendOut();
+    public void testBorrowSeriesMakesBooksUnavailable() {
+        bookSeries.borrowSeries();
         assertFalse(book1.isAvailable());
+        assertFalse(book2.isAvailable());
+        assertFalse(book3.isAvailable());
+    }
 
-
-        book1.returnBook();
+    @Test
+    public void testReturnSeriesMakesBooksAvailableAgain() {
+        bookSeries.borrowSeries();
+        bookSeries.returnSeries();
         assertTrue(book1.isAvailable());
+        assertTrue(book2.isAvailable());
+        assertTrue(book3.isAvailable());
+    }
+
+    @Test
+    public void testGetTitle() {
+        assertEquals("Awesome Series", bookSeries.getTitle());
+    }
+
+    @Test
+    public void testSetTitle() {
+        bookSeries.setTitle("New Title");
+        assertEquals("New Title", bookSeries.getTitle());
+    }
+
+    @Test
+    public void testGetAuthors() {
+        List<Author> authors = bookSeries.getAuthors();
+        assertEquals(1, authors.size());
+        assertEquals("Author A", authors.get(0).getName());
+    }
+
+    @Test(expected = BookSeriesNotASeriesException.class)
+    public void testConstructorWithOneBookThrowsException() throws Exception {
+        List<Book> singleBookList = new ArrayList<>();
+        singleBookList.add(new Book("Lonely Book", "Author A"));
+        new BookSeries("Invalid Series", singleBookList, "Author A");
     }
 
     @Test(expected = EmptyAuthorListException.class)
-    public void testBookWithEmptyAuthorListThrowsException() throws EmptyAuthorListException {
-
-        new Book("No Author Book", List.of());
+    public void testConstructorWithEmptyAuthorListThrowsException() throws Exception {
+        List<Author> emptyAuthors = new ArrayList<>();
+        new BookSeries("Another Series", books, emptyAuthors);
     }
 }
