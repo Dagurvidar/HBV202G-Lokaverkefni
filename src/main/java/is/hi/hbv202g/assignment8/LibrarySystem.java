@@ -36,7 +36,8 @@ public class LibrarySystem {
 
             System.out.println("\n--- All Book Series ---");
             for (BookSeries series : bookSeriesList) {
-                System.out.println("- " + series.getTitle() + ", by " + series.getAuthors());
+                System.out.println("- " + series.getTitle() + ", by " + series.getAuthors()
+                        + "\t " + (series.isAvailable() ? "available" : "unavailable"));
             }
         }
     }
